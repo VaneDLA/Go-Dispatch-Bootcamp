@@ -26,3 +26,24 @@ func ReadCsvFile(filePath string) ([][]string, error) {
 
 	return records, nil
 }
+
+func AddLine(filePath string, line []string) (error) {
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND, 0755)
+	if err != nil {
+			fmt.Errorf("Unable to read csv file: %v", err)
+			return err
+	}
+	defer f.Close()
+
+	csvWriter := csv.NewWriter(f)
+	defer csvWriter.Flush()
+
+	err = csvWriter.Write(line)
+
+	if err != nil {
+			fmt.Errorf("Unable to write to csv file: %v", err)
+			return err
+	}
+
+	return nil
+}

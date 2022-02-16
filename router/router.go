@@ -7,10 +7,11 @@ import (
 )
 
 // PatientController is the interface that wraps the controller's methods
-// GetPatientByID, GetAllPatients.
+// GetPatientByID, GetAllPatients, GetPersonByID.
 type PatientController interface {
 	GetPatientByID(w http.ResponseWriter, r *http.Request)
 	GetAllPatients(w http.ResponseWriter, r *http.Request)
+	GetRemotePatientByID(w http.ResponseWriter, r *http.Request)
 }
 
 // Setup returns a router instance
@@ -28,6 +29,9 @@ func Setup(c PatientController) *mux.Router {
 
 	p.HandleFunc("/{id}", c.GetPatientByID).
 		Methods(http.MethodGet).Name("GetPatientByID")
+
+	p.HandleFunc("/remote/{id}", c.GetRemotePatientByID).
+		Methods(http.MethodGet).Name("GetRemotePatientByID")
 
 	return r
 }
