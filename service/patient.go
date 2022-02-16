@@ -1,10 +1,6 @@
 package service
 
 import (
-	"encoding/csv"
-	"fmt"
-	"log"
-	"os"
 	"strconv"
 
 	errz "github.com/BernardoGR/Go-Dispatch-Bootcamp/errors"
@@ -17,20 +13,14 @@ type PatientService struct {
 }
 
 // New returns a new PatientService instance.
-func New(csvPath string) *PatientService {
-	data, err := readCsvFile(csvPath)
-	if err != nil {
-		log.Fatal("Error reading csv: ", err)
-	}
-	// TODO check for errors reading file
-
-	return &PatientService{
+func New(data model.Patients) PatientService {
+	return PatientService {
 		data: data,
 	}
 }
 
 // GetAllPatients returns all patients data.
-func (ps *PatientService) GetAllPatients() (model.Patients, error) {
+func (ps PatientService) GetAllPatients() (model.Patients, error) {
 	if err := ps.dataValidation(); err != nil {
 		return nil, err
 	}
@@ -39,24 +29,24 @@ func (ps *PatientService) GetAllPatients() (model.Patients, error) {
 }
 
 // GetPatientByID returns an patient by its ID.
-func (ps *PatientService) GetPatientByID(id int) (*model.Patient, error) {
+func (ps PatientService) GetPatientByID(id int) (model.Patient, error) {
 	if err := ps.dataValidation(); err != nil {
-		return nil, err
+		return model.Patient{}, err
 	}
 
 	// find the patient in the data
 	for _, p := range ps.data {
 			if p.ID == id {
-				return &p, nil
+				return p, nil
 			}
 	}
-	return nil, errz.ErrNotFound
+	return model.Patient{}, errz.ErrNotFound
 }
 
 
 // dataValidation is an auxiliary function that checks if the data has been initialized or if it is empty
 // returns a matching ServiceError if any of these conditions are met.
-func (ps *PatientService) dataValidation() error {
+func (ps PatientService) dataValidation() error {
 	// special handling if data is nil
 	if ps.data == nil {
 		return errz.ErrDataNotInitialized
@@ -70,28 +60,11 @@ func (ps *PatientService) dataValidation() error {
 	return nil
 }
 
-func readCsvFile(filePath string) (model.Patients, error) {
-	f, err := os.Open(filePath)
-	if err != nil {
-			fmt.Errorf("Unable to read input file: %v", err)
-			return nil, err
-	}
-	defer f.Close()
-
-	csvReader := csv.NewReader(f)
-	csvReader.FieldsPerRecord = 3
-
-	records, err := csvReader.ReadAll()
-
-	if err != nil {
-			fmt.Errorf("Unable to parse file: %v", err)
-			return nil, err
-	}
-
+func ParsePatients(raw_data [][]string) model.Patients {
 	var patient model.Patient
 	var patientSlice model.Patients
 
-	for i, r := range records {
+	for i, r := range raw_data {
 		if i == 0 {
 			continue
 		}
@@ -101,5 +74,5 @@ func readCsvFile(filePath string) (model.Patients, error) {
 		patientSlice = append(patientSlice, patient)
 	}
 
-	return patientSlice, nil
+	return patientSlice
 }

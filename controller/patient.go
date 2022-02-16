@@ -17,7 +17,7 @@ import (
 // usecase is the interface that wraps the usecase's methods
 // GetPatientByID, GetAllPatients.
 type usecase interface {
-	GetPatientByID(id int) (*model.Patient, error)
+	GetPatientByID(id int) (model.Patient, error)
 	GetAllPatients() (model.Patients, error)
 }
 
@@ -27,21 +27,19 @@ type patientController struct {
 }
 
 // New returns a new PatientController instance.
-func New(uc usecase) *patientController {
-	return &patientController{
+func New(uc usecase) patientController {
+	return patientController{
 		usecase: uc,
 	}
 }
 
 // GetAllPatients calls the usecase to return all patients.
-func (pc *patientController) GetAllPatients(w http.ResponseWriter, r *http.Request) {
+func (pc patientController) GetAllPatients(w http.ResponseWriter, r *http.Request) {
 	// get all patients from the usecase
 	patients, err := pc.usecase.GetAllPatients()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, "error getting patients")
-
-		log.Fatalf("getting all patients: %v", err)
 	}
 
 	// special handling if patients is empty
@@ -70,7 +68,7 @@ func (pc *patientController) GetAllPatients(w http.ResponseWriter, r *http.Reque
 }
 
 // GetPatientByID returns an patient by its ID.
-func (pc *patientController) GetPatientByID(w http.ResponseWriter, r *http.Request) {
+func (pc patientController) GetPatientByID(w http.ResponseWriter, r *http.Request) {
 	// extract the path parameters
 	vars := mux.Vars(r)
 
@@ -79,8 +77,6 @@ func (pc *patientController) GetPatientByID(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "invalid id: %v", err)
-
-		log.Fatalf("converting id param into an int: %v", err)
 	}
 
 	// get the patient from the usecase
@@ -94,12 +90,10 @@ func (pc *patientController) GetPatientByID(w http.ResponseWriter, r *http.Reque
 		case errors.Is(err, errz.ErrDataNotInitialized):
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprintf(w, "data not initialized")
-
-			log.Fatalf("getting patient: %v", err)
 		}
 	}
 
-	if patient == nil {
+	if (patient == model.Patient{}) {
 		log.Println("no patient found")
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintln(w, "no patient found")

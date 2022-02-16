@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/BernardoGR/Go-Dispatch-Bootcamp/controller"
+	"github.com/BernardoGR/Go-Dispatch-Bootcamp/repository"
 	"github.com/BernardoGR/Go-Dispatch-Bootcamp/router"
 	"github.com/BernardoGR/Go-Dispatch-Bootcamp/service"
 	"github.com/BernardoGR/Go-Dispatch-Bootcamp/usecase"
@@ -16,9 +17,17 @@ import (
 )
 
 func main() {
+	// app config variables
+	dataSource := "csv"
+	dataPath := "./resources/patients.csv"
+
+	// Initialize data depending on data source. 
+	var raw_data = getRawData(dataSource, dataPath)
+	var data = service.ParsePatients(raw_data)
+
 	// create instances for the service, usecase, controller and router
 	// injecting the corresponding dependencies to each one of them
-	patientService := service.New("./resources/patients.csv")
+	patientService := service.New(data)
 	patientUsecase := usecase.New(patientService)
 	patientController := controller.New(patientUsecase)
 	httpRouter := router.Setup(patientController)
@@ -43,4 +52,17 @@ func main() {
 	if err != nil {
 		log.Fatalf("starting server: %v", err)
 	}
+}
+
+func getRawData(dataSource, dataPath string) [][]string {
+	// use switch in case we have more data sources in the future
+	switch dataSource {
+	case "csv":
+		data, err := repository.ReadCsvFile(dataPath)
+		if err != nil {
+			log.Println("Error reading csv: ", err)
+		}
+		return data
+	}
+	return [][]string{}
 }

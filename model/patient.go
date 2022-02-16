@@ -5,7 +5,7 @@ type Patients []Patient
 
 // Patient struct represents a single employee.
 type Patient struct {
-	ID			int			`json:"id"`
-	Name		string	`json:"name"`
-	Age			int			`json:"age"`
+	ID      int     `json:"id"`
+	Name    string  `json:"name"`
+	Age     int     `json:"age"`
 }
