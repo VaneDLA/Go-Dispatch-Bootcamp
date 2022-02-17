@@ -1,0 +1,13 @@
+ID,NUMBER,NAME,IMAGE,ABILITIES
+1,6,charizard,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png,"blaze,solar-power"
+2,248,tyranitar,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/248.png,"sand-stream,unnerve"
+3,244,entei,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png,"pressure,inner-focus"
+4,383,groudon,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/383.png,"drought"
+5,145,zapdos,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png,"pressure,static"
+6,146,moltres,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png,"pressure,flame-body"
+7,147,dratini,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png,"shed-skin,marvel-scale"
+8,148,dragonair,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/148.png,"shed-skin,marvel-scale"
+9,149,dragonite,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png,"inner-focus,multiscale"
+10,150,mewtwo,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png,"pressure,unnerve"
+11,250,ho-oh,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png,"pressure,regenerator"
+12,249,lugia,https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png,"pressure,multiscale"
