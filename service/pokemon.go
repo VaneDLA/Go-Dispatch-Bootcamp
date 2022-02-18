@@ -173,6 +173,8 @@ func (ps pokemonDBService) FilterPokemons(typ string, items int, itemsPerWorker 
 
 	resultChan := make(chan *model.Pokemon, items)
 	dataChan := make(chan []string)
+	finishChan := make(chan bool)
+	defer close(finishChan)
 
 	wp := utils.NewWorkerPool(wg, numWorkers, dataChan, resultChan)
 	addWorkers(wp, typ, items, itemsPerWorker)
@@ -188,8 +190,9 @@ func (ps pokemonDBService) FilterPokemons(typ string, items int, itemsPerWorker 
 	csvReader := csv.NewReader(file)
 
 	// read the csv and write it to dataChan
-	go func() {
+	go func(end <-chan bool) {
 		log.Println("Started routine to read csv file.")
+	ReadLoop:
 		for {
 			record, err := csvReader.Read()
 			if err == io.EOF {
@@ -203,15 +206,28 @@ func (ps pokemonDBService) FilterPokemons(typ string, items int, itemsPerWorker 
 				continue
 			}
 			dataChan <- record
+
+			select {
+			case workersComplete := <-end:
+				if workersComplete {
+					log.Println("Stop reading csv file, workers completed.")
+					break ReadLoop
+				}
+			default:
+				continue ReadLoop
+			}
 		}
+		log.Println("Closing data channel.")
 		close(dataChan)
-	}()
+		log.Println("Finished routine to read csv file.")
+	}(finishChan)
 
 	// wait for worker group to finish and close out channel
-	go func() {
+	go func(end chan<- bool) {
 		wg.Wait()
 		wp.Close()
-	}()
+		end <- true
+	}(finishChan)
 
 	result := model.Pokemons{}
 	for pokemon := range resultChan {
