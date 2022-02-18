@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	errz "github.com/BernardoGR/Go-Dispatch-Bootcamp/errors"
 	"github.com/BernardoGR/Go-Dispatch-Bootcamp/model"
@@ -116,9 +117,19 @@ func personToPatient(person model.Person) (model.Patient) {
 }
 
 func ageFromBirth(birth_str string) (int) {
+	age_num := 0
+	if birth_str == "unknown" {
+		return age_num
+	}
 	to_index := len(birth_str) - 3
-	age := birth_str[0:to_index]
-	age_num, _ := strconv.Atoi(age)
+	if to_index >= 0 {
+		decimal_index := strings.Index(birth_str, ".")
+		if decimal_index > -1 {
+			to_index = decimal_index
+		}
+		age := birth_str[0:to_index]
+		age_num, _ = strconv.Atoi(age)
+	}
 	return age_num
 }
 

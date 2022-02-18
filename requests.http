@@ -7,4 +7,4 @@ GET {{baseUrl}}/patients/
 GET {{baseUrl}}/patients/2
 
 ### Get remote patient by id
-GET {{baseUrl}}/patients/remote/1
+GET {{baseUrl}}/patients/remote/8

@@ -1,8 +1,50 @@
 id,name,age
 1,Bernardo,55
 2,John Doe,10
-3,Luke Skywalker,19
-4,Yoda,896
+4,Luke Skywalker,19
 5,C-3PO,112
 6,R2-D2,33
-7,Darth Vader,0
+7,Darth Vader,41
+8,Leia Organa,19
+9,Owen Lars,52
+10,Beru Whitesun lars,47
+11,R5-D4,0
+12,Biggs Darklighter,24
+13,Obi-Wan Kenobi,57
+14,Anakin Skywalker,41
+15,Wilhuff Tarkin,64
+16,Chewbacca,200
+17,Han Solo,29
+18,Greedo,44
+19,Jabba Desilijic Tiure,600
+21,Wedge Antilles,21
+22,Jek Tono Porkins,0
+23,Yoda,896
+24,Palpatine,82
+25,Boba Fett,0
+26,IG-88,15
+27,Bossk,53
+28,Lando Calrissian,31
+29,Lobot,37
+30,Ackbar,41
+31,Mon Mothma,48
+32,Arvel Crynyd,0
+33,Wicket Systri Warrick,8
+34,Nien Nunb,0
+35,Qui-Gon Jinn,92
+36,Nute Gunray,0
+37,Finis Valorum,91
+38,Padmé Amidala,46
+39,Jar Jar Binks,52
+40,Roos Tarpals,0
+41,Rugor Nass,0
+42,Ric Olié,0
+43,Watto,0
+44,Sebulba,0
+45,Quarsh Panaka,62
+46,Shmi Skywalker,72
+47,Darth Maul,54
+48,Bib Fortuna,0
+49,Ayla Secura,48
+50,Ratts Tyerel,0
+51,Dud Bolt,0
