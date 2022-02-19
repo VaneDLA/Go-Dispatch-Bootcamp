@@ -11,6 +11,7 @@ type IworkerPool interface {
 	Run()
 	Close()
 	AddWorker(w Iworker)
+	GetWorkers() []Iworker
 }
 
 type Iworker interface {
@@ -55,4 +56,8 @@ func (wp *workerPool) AddWorker(w Iworker) {
 
 func (wp *workerPool) Close() {
 	close(wp.outChan)
+}
+
+func (wp *workerPool) GetWorkers() []Iworker {
+	return wp.workers
 }

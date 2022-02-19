@@ -148,7 +148,7 @@ func (ps pokemonDBService) CatchPokemon(p *model.PokemonAPI) (*model.Pokemon, er
 		return nil, err
 	}
 
-	pokemon, err := pokemonAPIToPokemon(p)
+	pokemon, err := pokemonAPIToPokemon(p, pokemonOrder)
 	if err != nil {
 		return nil, err
 	}
@@ -277,17 +277,17 @@ func initDB(data [][]string) PokemonMap {
 	return result
 }
 
-func NextId() (int, error) {
-	if len(pokemonOrder) == 0 {
+func nextId(po []int) (int, error) {
+	if len(po) == 0 {
 		return 0, errors.ErrDataNotInitialized
 	}
-	return pokemonOrder[len(pokemonOrder)-1] + 1, nil
+	return po[len(po)-1] + 1, nil
 }
 
-func pokemonAPIToPokemon(p *model.PokemonAPI) (*model.Pokemon, error) {
-	nextId, err := NextId()
+func pokemonAPIToPokemon(p *model.PokemonAPI, po []int) (*model.Pokemon, error) {
+	nextId, err := nextId(po)
 	if err != nil {
-		log.Println("Uninitialized DB - NextId")
+		log.Println("Uninitialized DB - nextId")
 		return nil, errors.ErrDataNotInitialized
 	}
 
