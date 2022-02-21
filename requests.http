@@ -8,3 +8,6 @@ GET {{baseUrl}}/patients/2
 
 ### Get remote patient by id
 GET {{baseUrl}}/patients/remote/8
+
+### Get patients concurrently
+GET {{baseUrl}}/patients/concurrently

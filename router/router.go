@@ -12,6 +12,7 @@ type PatientController interface {
 	GetPatientByID(w http.ResponseWriter, r *http.Request)
 	GetAllPatients(w http.ResponseWriter, r *http.Request)
 	GetRemotePatientByID(w http.ResponseWriter, r *http.Request)
+	GetPatientsConcurrently(w http.ResponseWriter, r *http.Request)
 }
 
 // Setup returns a router instance
@@ -26,6 +27,9 @@ func Setup(c PatientController) *mux.Router {
 
 	p.HandleFunc("/", c.GetAllPatients).
 		Methods(http.MethodGet).Name("GetAllPatients")
+
+	p.HandleFunc("/concurrently", c.GetPatientsConcurrently).
+		Methods(http.MethodGet).Name("GetPatientsConcurrently")
 
 	p.HandleFunc("/{id}", c.GetPatientByID).
 		Methods(http.MethodGet).Name("GetPatientByID")

@@ -22,7 +22,7 @@ type PatientService struct {
 
 // New returns a new PatientService instance.
 func New() PatientService {
-	raw_data, err := repository.ReadCsvFile(csvPath)
+	raw_data, err := repository.ReadAllCsvFile(csvPath)
 	
 	if err != nil {
 		log.Println("Error reading csv: ", err)
@@ -83,6 +83,20 @@ func (ps *PatientService) CreatePatientFromRemote(resp *http.Response) (model.Pa
 	ps.data = append(ps.data, patient)
 	return patient, nil
 }
+
+// GetPatientsConcurrently reads csv concurrently and returns patients.
+func (ps PatientService) GetPatientsConcurrently() (model.Patients, error) {
+	patients, err := repository.ReadCsvFileConcurrent(csvPath)
+	
+	if err != nil {
+		return nil, err
+	}
+
+	return patients, nil
+}
+
+
+// ---- PRIVATE METHODS ----
 
 func parseCSVPatients(raw_data [][]string) model.Patients {
 	var patient model.Patient
